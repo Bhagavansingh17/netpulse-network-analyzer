@@ -57,7 +57,7 @@ flowchart LR
   Connectivity --> Routing[Routing]
   Connectivity --> Neighbors[Neighbors]
   Packet --> TCP[TCP Analysis]
-  Interface --> Sysfs[/sys/class/net]
+  Interface --> Sysfs["/sys/class/net"]
   Routing --> IP[iproute2]
   Packet --> Scapy[Scapy/libpcap]
 ```
