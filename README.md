@@ -127,3 +127,49 @@ NetPulse performs only explicitly requested resolution, ping, TCP connection, ro
 - ICMP type/code diagnostics
 - Persistent baseline comparison
 - Optional PCAP export as a separate opt-in
+
+## Docker
+
+Build the image from the project root:
+
+```bash
+docker build -t netpulse .
+```
+
+Run the existing CLI in a container:
+
+```bash
+docker run --rm --network host netpulse --help
+docker run --rm --network host netpulse interface
+docker run --rm --network host netpulse diagnose example.com --port 443
+```
+
+`--network host` uses the Linux host's network namespace, so route and interface
+inspection is more representative of the host than Docker's default isolated
+network. Host networking is supported by Docker Engine on Linux; Docker Desktop
+on macOS and Windows runs containers inside a Linux VM and does not provide the
+same direct view of the native host network.
+
+Packet capture needs additional Linux capabilities. Grant them only to the
+capture container and only when needed. The image includes libpcap for Scapy's
+BPF capture filters:
+
+```bash
+docker run --rm --network host \
+  --cap-add=NET_RAW \
+  --cap-add=NET_ADMIN \
+  netpulse capture --interface eth0 --duration 10 --tcp
+```
+
+Replace `eth0` with an interface visible to the container. Do not use
+`--privileged` for routine diagnostics. Host security policy, rootless Docker,
+or platform restrictions may still prevent capture even when capabilities are
+added. Run captures only on networks and interfaces you are authorized to
+inspect.
+
+Docker can limit visibility into host interfaces, routes, `/sys/class/net`
+counters, and NIC-specific `ethtool` data. Without host networking, NetPulse
+reports the container's network namespace; even with it, results depend on the
+host OS, Docker configuration, and granted capabilities. Latency and packet
+capture inside a container also include container/runtime and scheduling
+effects and should not be treated as hardware-precision measurements.
