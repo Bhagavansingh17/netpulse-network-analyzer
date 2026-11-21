@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "netpulse"
+version = "1.0.0"
+description = "Linux network latency and connectivity diagnostics"
+requires-python = ">=3.12"
+dependencies = [
+    "scapy>=2.5.0",
+]
+
+[project.scripts]
+netpulse = "netpulse.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["netpulse*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

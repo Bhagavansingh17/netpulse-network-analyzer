@@ -1,0 +1,1 @@
+[{"ifname":"eth0","operstate":"UP","address":"00:11:22:33:44:55","mtu":1500,"addr_info":[{"family":"inet","local":"192.0.2.10","prefixlen":24}]}]
