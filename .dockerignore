@@ -1,0 +1,14 @@
+.git
+.gitignore
+.venv
+.vscode/
+.idea/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.pcap
+*.pcapng
+netpulse.log
+*.egg-info/
+dist/
+build/
